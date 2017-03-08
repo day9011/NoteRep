@@ -309,6 +309,7 @@ set tags=tags
 set tags+=./tags "add current directory's generated tags file
 set tags+=/home/hanyu/kaldi-trunk/src/tags "add new tags file(刚刚生成tags的路径，在ctags -R生成tags文件后，不要将tags移动到别的目录，否则ctrl+］时，会提示找不到源码文件)"
 set tags+=/usr/include/c++/tags
+set tags+=/home/hanyu/YZ87_CNTK/Source/tags
 "-- omnicppcomplete setting --
 " 按下F3自动补全代码，注意该映射语句后不能有其他字符，包括tab；否则按下F3会自动补全一些乱码
 imap <F3> <C-X><C-O>
