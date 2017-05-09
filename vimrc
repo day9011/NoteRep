@@ -1,9 +1,12 @@
 " Basics {
 set nocompatible " get out of horrible vi-compatible mode *Vundle required* filetype off " *Vundle required*
 " Vundle
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'git://git.wincent.com/command-t.git'
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdcommenter'
@@ -20,7 +23,6 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'groenewege/vim-less'
-Plugin 'matchit.zip'
 call vundle#end()
 filetype plugin indent on " load filetype plugins and indent settings; *Vundle required*
 set cindent shiftwidth=4
@@ -158,7 +160,6 @@ set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
 set preserveindent " but above all -- follow the conventions laid before us
 set ignorecase " case insensitive by default
 set smartcase " if there are caps, go case-sensitive
-set completeopt=menu,longest,preview " improve the way autocomplete works
 set nocursorcolumn " don't show the current column
 " }
 
@@ -238,10 +239,8 @@ let g:tagbar_compact = 1
 " Python customization {
 function LoadPythonGoodies()
 
-    if &ft=="python"||&ft=="html"||&ft=="xhtml"
+python << EOF
 
-        " set python path to vim, and virtualenv settings
-        python << EOF
 import os, sys, vim
 
 for p in sys.path:
@@ -279,23 +278,16 @@ EOF
 
         set ai tw=0 ts=4 sts=4 sw=4 et
 
-    endif
-
 endfunction
 
 if !exists("myautocmds")
     let g:myautocmds=1
 
-    "call LoadPythonGoodies()
+    "all LoadPythonGoodies()
     "autocmd Filetype python,html,xhtml call LoadPythonGoodies()
     au BufNewFile,BufRead *.py call LoadPythonGoodies()
     au BufRead,BufNewFile *.md set filetype=markdown
 
-    " Omni completion
-    autocmd FileType python set omnifunc=pythoncomplete#Complete
-    autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType css set omnifunc=csscomplete#CompleteCSS
     " Dissmiss PyDoc preview
     autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
     autocmd InsertLeave * if pumvisible() == 0|pclose|endif
@@ -307,26 +299,40 @@ map <F5> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>:TlistUpdat
 imap <F5> <ESC>:!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR> :TlistUpdate<CR>
 set tags=tags
 set tags+=./tags "add current directory's generated tags file
-set tags+=/home/hanyu/kaldi-trunk/src/tags "add new tags file(刚刚生成tags的路径，在ctags -R生成tags文件后，不要将tags移动到别的目录，否则ctrl+］时，会提示找不到源码文件)"
+set tags+=~/Documents/kaldi/src/tags "add new tags file(刚刚生成tags的路径，在ctags -R生成tags文件后，不要将tags移动到别的目录，否则ctrl+］时，会提示找不到源码文件)"
 set tags+=/usr/include/c++/tags
-set tags+=/home/hanyu/YZ87_CNTK/Source/tags
-"-- omnicppcomplete setting --
+"-- YouCompleteMe setting --
 " 按下F3自动补全代码，注意该映射语句后不能有其他字符，包括tab；否则按下F3会自动补全一些乱码
-imap <F3> <C-X><C-O>
-" 按下F2根据头文件内关键字补全
-imap <F2> <C-X><C-I>
-set completeopt=menu,menuone " 关掉智能补全时的预览窗口
-let OmniCpp_MayCompleteDot = 1 " autocomplete with .
-let OmniCpp_MayCompleteArrow = 1 " autocomplete with ->
-let OmniCpp_MayCompleteScope = 1 " autocomplete with ::
-let OmniCpp_SelectFirstItem = 2 " select first item (but don't insert)
-let OmniCpp_NamespaceSearch = 2 " search namespaces in this and included files
-let OmniCpp_ShowPrototypeInAbbr = 1 " show function prototype in popup window
-let OmniCpp_GlobalScopeSearch=1 " enable the global scope search
-let OmniCpp_DisplayMode=1 " Class scope completion mode: always show all members
-"let OmniCpp_DefaultNamespaces=["std"]
-let OmniCpp_ShowScopeInAbbr=1 " show scope in abbreviation and remove the last column
-let OmniCpp_ShowAccess=1 
+set completeopt=menu,longest,preview " improve the way autocomplete works
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+inoremap <expr> <CR>	pumvisible() ? "\<C-y>" : "\<CR>" "Choose while entering
+" the action of down key, up key and so on
+inoremap <expr> <Down>	pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up>	pumvisible() ? "\<C-p>" : "\<Up>"
+inoremap <expr> <PageDown>	pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+inoremap <expr> <PageUp>	pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+
+" Go to the place where function define.
+nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <F<F6>> :YcmForceCompileAndDiagnostics<CR>
+inoremap <leader><leader> <C-x><C-o>
+
+let g:ycm_global_ycm_extra_conf = '~/.vim/data/ycm/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf=0
+let g:ycm_collect_identifiers_from_tags_files=1
+let g:ycm_collect_identifiers_from_comments_and_strings=0
+let g:ycm_min_num_of_chars_for_completion=2
+let g:ycm_cache_omnifunc=0
+let g:ycm_seed_identifiers_with_syntax=1
+let g:ycm_complete_in_comments=1
+let g:ycm_complete_in_strings=1
+let g:ycm_filetype_blacklist = {
+	\ 'tagbar' : 1,
+	\ 'nerdtree' : 1,
+	\}
+let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_previous_completion = ['<Up>']
+
 "-- Taglist setting --
 let Tlist_Ctags_Cmd='ctags' "因为我们放在环境变量里，所以可以直接执行
 let Tlist_Use_Right_Window=1 "让窗口显示在右边，0的话就是显示在左边
@@ -361,5 +367,7 @@ let g:NERDCommentEmptyLines = 1
 
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
+let g:NERDTreeHijackNetrw = 0
 let g:mapleader=","
 nmap wm :WMToggle<cr>
+
