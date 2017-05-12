@@ -126,6 +126,8 @@ class SRE {
 		SRE(MyOption opts) { opts_ = opts; }
 
 		void set_my_option(MyOption opts) { opts_ = opts; }
+		Vector<BaseFloat> get_voice_data() { return voice_data_; }
+		Vector<BaseFloat> get_vad_result() { return vad_result_; }
 
 		~SRE() {}
 };

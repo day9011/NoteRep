@@ -2,6 +2,8 @@
 #define MY_SCORE
 #include "mylib/sre.h"
 
+using namespace std;
+
 namespace kaldi
 {
 

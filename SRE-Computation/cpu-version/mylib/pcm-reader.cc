@@ -114,8 +114,8 @@ void PCMData::Read(std::istream &is, long fileLen) {
   uint32 block_align = 2;
   uint32 num_channels = 1;
   uint32 bits_per_sample = 16;
-  uint32 swap = 0;
-  samp_freq_ = 8000;
+  uint32 swap = 1;
+  samp_freq_ = sampFreq;
   uint32 data_chunk_size = fileLen;
   KALDI_LOG << "data size:" << data_chunk_size << " byte";
   for (int32 remain_chunk_size = data_chunk_size; remain_chunk_size > 0;
@@ -154,6 +154,7 @@ void PCMData::Read(std::istream &is, long fileLen) {
     KALDI_ERR << "PCMData: empty file (no data)";
   
   uint32 num_samp = num_bytes_read / block_align;
+  KALDI_LOG << "PCMData: there are " << num_samp << " samples";
   data_.Resize(num_channels, num_samp);
   for (uint32 i = 0; i < num_samp; i++) {
     for (uint32 j = 0; j < num_channels; j++) {

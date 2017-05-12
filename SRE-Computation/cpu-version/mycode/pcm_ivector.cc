@@ -1,4 +1,5 @@
-#include "mylib/sre.h"
+#include "mylib/cpu-compute.h"
+#include "mylib/cpu-init.h"
 #include <string>
 
 using namespace kaldi;
@@ -9,14 +10,14 @@ int main(int argc, char *argv[])
 {
 	typedef kaldi::int64 int64; typedef kaldi::int32 int32;
 	const char *usage = "Acquire test result for one person's pcm.\n"
-		"Usage: pcm_ivector [options] <file.pcm> <ubm-file> <ie-file> gmm.ubm valid_frames\n"
+		"Usage: pcm_ivector [options] <file.pcm> <ubm-file> <ie-file> gmm.ubm valid_frames ivector_path\n"
 		"Options: --config\n"
-		"example: pcm_ivector --config=./mfcc.conf file final.ubm final.ie gmm.ubm valid_frames\n";
+		"example: pcm_ivector --config=./mfcc.conf file final.ubm final.ie gmm.ubm valid_frames ivector_path\n";
 	ParseOptions po(usage);
 	MyOption opts;
 	opts.Register(&po);
 	po.Read(argc, argv);
-	if (po.NumArgs() != 5) {
+	if (po.NumArgs() != 6) {
 		po.PrintUsage();
 		exit(1);
 	}
@@ -27,6 +28,7 @@ int main(int argc, char *argv[])
 	std::string final_ie = po.GetArg(3);
 	std::string gmm_ubm = po.GetArg(4);
 	std::string num_valid_frames_ = po.GetArg(5);
+	std::string ivectorpath= po.GetArg(6);
 	int32 num_valid_frames = static_cast<int32>(std::stoi(num_valid_frames_));
 	std::fstream _file;
 	_file.open(filename.c_str(), std::ios::in);
@@ -53,53 +55,10 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 	_file.close();
-	SRE<PCMGetData> sre_instance(filename, final_ubm, final_ie, gmm_ubm);
-//	sre_instance.set_my_option(opts);
-	//音频流数据读取
-	if(!sre_instance.data_read())
-	{
-		KALDI_ERR << "read pcm file error!" << std::endl;
-		return -1;
-	}
-	//mfcc特征值计算
-	if(!sre_instance.compute_mfcc())
-	{
-		KALDI_ERR << "compute mfcc error!";
-		return -1;
-	}
-//	print_matrix<BaseFloat>(sre_instance.get_feature());
-	//vad计算
-	if(!sre_instance.compute_vad())
-	{
-		KALDI_ERR << "compute vad error!";
-		return -1;
-	}
-	//add-feats
-	if(!sre_instance.add_feats())
-	{
-		KALDI_ERR << "add deltas to feats error!";
-		return -1;
-	}
-	if (sre_instance.get_feature().NumRows() < num_valid_frames)
-	{
-		std::cout << "1";
-		return -1;
-	}
-	KALDI_LOG << "input valid frames param:" << num_valid_frames;
-	KALDI_LOG << "valid frames:" << sre_instance.get_feature().NumRows();
-	//gmm select and compute posterior
-	if(!sre_instance.fgmm_to_gselect_posterior())
-	{
-		KALDI_ERR << "compute posterior error!";
-		return -1;
-	}
-	//ivector extract
-	if(!sre_instance.extract_ivector())
-	{
-		KALDI_ERR << "extract ivector error!";
-		return -1;
-	}
-	print_vector<BaseFloat>(sre_instance.get_ivector());
+	InitSRE ubm;
+	ubm.ReadUBMFile(final_ubm, final_ie, gmm_ubm);
+	CpuCompute comp;
+	comp.Compute(&ubm, filename, ivectorpath, num_valid_frames);
 	KALDI_LOG << "\nfinished!";
 	return 0;
 }

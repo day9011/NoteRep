@@ -25,7 +25,7 @@
 #define debugMel (1==0)
 #define htkMode (1==0)
 //in my sre option
-#define numIgnoreFrames 500
+#define numIgnoreFrames 0
 #define numGselect 20 //in gmm-select
 #define Channel -1
 

@@ -25,8 +25,7 @@ struct MyOption
 	        vad_opts.vad_energy_mean_scale = vadEnergyMeanScale;
 	        mfcc_opts.frame_opts.samp_freq = sampFreq;
 	        mfcc_opts.frame_opts.frame_length_ms = frameLength;
-	        mfcc_opts.frame_opts.dither = 0.0;
-			mfcc_opts.mel_opts.high_freq = highFreq;
+	        mfcc_opts.mel_opts.high_freq = highFreq;
 	        mfcc_opts.mel_opts.low_freq = lowFreq;
 	        mfcc_opts.num_ceps = numCeps;
 			mfcc_opts.frame_opts.dither = 0.0;

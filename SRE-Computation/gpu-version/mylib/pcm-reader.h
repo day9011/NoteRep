@@ -6,6 +6,7 @@
 #include "base/kaldi-types.h"
 #include "matrix/kaldi-vector.h"
 #include "matrix/kaldi-matrix.h"
+#include "mylib/conf.h"
 
 
 namespace kaldi
@@ -72,7 +73,7 @@ class PCMHolder {
       return true;
     } catch(const std::exception &e) {
       KALDI_WARN << "Exception caught in PCMHolder object (writing).";
-      if (!IsKaldiError(e.what())) { std::cerr << e.what(); }
+      std::cerr << e.what();
       return false;  // write failure.
     }
   }
@@ -99,7 +100,7 @@ class PCMHolder {
       return true;
     } catch(const std::exception &e) {
       KALDI_WARN << "Exception caught in PCMHolder object (reading).";
-      if (!IsKaldiError(e.what())) { std::cerr << e.what(); }
+      std::cerr << e.what();
       return false;  // write failure.
     }
   }

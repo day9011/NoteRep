@@ -9,7 +9,7 @@ using namespace kaldi;
 int main(int argc, char *argv[]) {
 	typedef kaldi::int32 int32;
 	typedef kaldi::int64 int64;
-	const char *usage = "for a test";
+	const char *usage = "Usage: ie_init final_ie_in final_ie_out";
 	ParseOptions po(usage);
 	bool compute_objf_change = true;
 	bool binary = true;
