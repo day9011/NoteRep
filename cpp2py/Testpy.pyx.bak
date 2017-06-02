@@ -1,0 +1,42 @@
+cdef extern from "py-int.h":
+	cdef cppclass Testpy:
+		Testpy() except +
+		Testpy(int) except +
+		int n
+		int get_n()
+		void print_n()
+		void set_n(int)
+	
+	int call_get_n(Testpy* ins)
+	void call_print_n(Testpy* ins)
+	void call_set_n(Testpy* ins, int)
+
+cdef class PyTestpy:
+	cdef Testpy _this
+
+	def __cinit__(self):
+		self._this = new Testpy()
+
+	def __cinit__(self, int v):
+		self._this = new Testpy(v)
+
+	def __dealloc__(self):
+		del self._this
+
+	def get_n(self):
+		return self._this.get_n()
+
+	def print_n(self):
+		self._this.print_n()
+
+	def set_n(self, int v):
+		self._this.set_n(v)
+
+cdef py_call_get_n(PyTest ins):
+	call_get_n(ins)
+
+cdef py_call_print_n(PyTest ins):
+	call_print_n(ins)
+
+cdef py_call_set_n(PyTest ins, int v)
+	call_set_n(ins, v)
