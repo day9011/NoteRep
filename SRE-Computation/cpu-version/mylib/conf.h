@@ -2,11 +2,13 @@
 #define MY_CONF
 
 //modified configure
-#define sampFreq 8000 //in FrameExtractionOptions
+#define sampFreq 16000 //in FrameExtractionOptions
 #define frameLength 20 //in FrameExtractionOptions
+#define useEdges (1==0) //in FrameExtractionOptions
 #define lowFreq 20 //in MelBanksOptions
 #define highFreq 3700 //in MelBanksOptions
 #define numCeps 20 //in MfccOptions
+#define ditherVal 0.5 //in MfccOptions
 #define vadEnergyThreshold 8 //in VadEnergyOptions
 #define vadEnergyMeanScale 0.5 //in VadEnergyOptions
 #define normVars (1==0) // in SlidingWindowCmnOptions

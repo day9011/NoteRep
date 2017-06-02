@@ -1,5 +1,10 @@
 #include "mylib/sre.h"
 #include "ivector/plda.h"
+#include <string>
+#include <math.h>
+
+using namespace std;
+
 void trim(string &);
 
 void trim(string &s){
@@ -11,6 +16,15 @@ void trim(string &s){
 	for(index = s.size() - 1; index > -1; index--)
 		if(char(s[index] < 58) && char(s[index] > 47)) break;
 	s.erase(index + 1, s.size());
+}
+
+BaseFloat cosine_value(const Vector<BaseFloat> v1, const Vector<BaseFloat> v2)
+{
+	BaseFloat dot_prod = VecVec(v1, v2);
+	BaseFloat v1_2 = VecVec(v1, v1);
+	BaseFloat v2_2 = VecVec(v2, v2);
+	BaseFloat res = dot_prod / sqrt(abs(v1_2)) / sqrt(abs(v2_2));
+	return res;
 }
 
 int main(int argc, char *argv[]) {
@@ -69,8 +83,8 @@ int main(int argc, char *argv[]) {
 		Vector<BaseFloat> ivector2;
 		ivector2.Resize(fields.size());
 		ivector2.CopyFromPtr(&fields[0], fields.size());
-		BaseFloat dot_prod = VecVec(ivector1, ivector2);
-		std::cout << dot_prod << std::endl;
+		BaseFloat cos_dis = cosine_value(ivector1, ivector2);
+		std::cout << cos_dis << std::endl;
 	} catch(const std::exception &e) {
 		std::cerr << e.what();
 		std::cout << "error" << std::endl;

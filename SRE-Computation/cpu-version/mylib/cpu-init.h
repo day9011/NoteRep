@@ -12,7 +12,7 @@ class InitSRE
 		bool ReadUBMFile(std::string final_ubm, std::string final_ie, std::string gmm_ubm);
 		
 		~InitSRE() {}
-		SREUBM ubm;
+		SREUBM *ubm;
 };
 
 

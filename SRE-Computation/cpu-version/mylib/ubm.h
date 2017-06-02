@@ -24,6 +24,9 @@ class SREUBM
 		DiagGmm gmm_;
 		FullGmm fgmm_;
 		MyIvectorExtractor ie_;
+
+		SREUBM& operator=(const SREUBM &) = delete;
+		SREUBM(const SREUBM&) = delete;
 };
 
 

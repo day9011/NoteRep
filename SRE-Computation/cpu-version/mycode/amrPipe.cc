@@ -2,6 +2,16 @@
 #include "mylib/cpu-init.h"
 #include <string>
 
+struct wav_data_param
+{
+	int data_length;
+	int sample_rate;
+	int bits_per_sample;
+	int channels;
+}
+
+static void write_string()
+
 using namespace kaldi;
 using kaldi::int32;
 using std::vector;
@@ -59,6 +69,6 @@ int main(int argc, char *argv[])
 	ubm.ReadUBMFile(final_ubm, final_ie, gmm_ubm);
 	CpuCompute comp;
 	comp.Compute(&ubm, filename, ivectorpath, num_valid_frames);
-	KALDI_LOG << "finished!";
+	KALDI_LOG << "\nfinished!";
 	return 0;
 }
