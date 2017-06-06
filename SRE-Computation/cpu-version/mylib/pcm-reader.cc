@@ -35,9 +35,9 @@ void PCMData::Expect4ByteTag(std::istream &is, const char *expected) {
   tmp[4] = '\0';
   is.read(tmp, 4);
   if (is.fail())
-    KALDI_ERR << "PCMData: expected " << expected << ", failed to read anything";
+    KADLI_WARN << "PCMData: expected " << expected << ", failed to read anything";
   if (strcmp(tmp, expected))
-    KALDI_ERR << "PCMData: expected " << expected << ", got " << tmp;
+    KADLI_WARN << "PCMData: expected " << expected << ", got " << tmp;
 }
 
 uint32 PCMData::ReadUint32(std::istream &is, bool swap) {
@@ -49,7 +49,7 @@ uint32 PCMData::ReadUint32(std::istream &is, bool swap) {
   if (swap)
     KALDI_SWAP4(u.result);
   if (is.fail())
-    KALDI_ERR << "PCMData: unexpected end of file.";
+    KADLI_WARN << "PCMData: unexpected end of file.";
   return u.ans;
 }
 
@@ -63,7 +63,7 @@ uint16 PCMData::ReadUint16(std::istream &is, bool swap) {
   if (swap)
     KALDI_SWAP2(u.result);
   if (is.fail())
-    KALDI_ERR << "PCMData: unexpected end of file.";
+    KADLI_WARN << "PCMData: unexpected end of file.";
   return u.ans;
 }
 
@@ -71,7 +71,7 @@ uint16 PCMData::ReadUint16(std::istream &is, bool swap) {
 void PCMData::Read4ByteTag(std::istream &is, char *dest) {
   is.read(dest, 4);
   if (is.fail())
-    KALDI_ERR << "PCMData: expected 4-byte chunk-name, got read errror";
+    KADLI_WARN << "PCMData: expected 4-byte chunk-name, got read errror";
 }
 
 // static
@@ -86,7 +86,7 @@ void PCMData::WriteUint32(std::ostream &os, int32 i) {
 #endif
   os.write(u.buf, 4);
   if (os.fail())
-    KALDI_ERR << "PCMData: error writing to stream.";
+    KADLI_WARN << "PCMData: error writing to stream.";
 }
 
 void PCMData::WriteUint16(std::ostream &os, int16 i) {
@@ -100,7 +100,7 @@ void PCMData::WriteUint16(std::ostream &os, int16 i) {
 #endif
   os.write(u.buf, 2);
   if (os.fail())
-    KALDI_ERR << "PCMData: error writing to stream.";
+    KADLI_WARN << "PCMData: error writing to stream.";
 }
 
 
@@ -143,7 +143,7 @@ void PCMData::Read(std::istream &is, long fileLen) {
 
   char *data_ptr = &(chunk_data_vec[0]);
   if (num_bytes_read == 0 && num_bytes_read != data_chunk_size) {
-    KALDI_ERR << "PCMData: failed to read data chunk (read no bytes)";
+    KADLI_WARN << "PCMData: failed to read data chunk (read no bytes)";
   } else if (num_bytes_read != data_chunk_size) {
     KALDI_ASSERT(num_bytes_read < data_chunk_size);
     KALDI_WARN << "Read fewer bytes than specified in the header: "
@@ -151,7 +151,7 @@ void PCMData::Read(std::istream &is, long fileLen) {
   }
   
   if (data_chunk_size == 0)
-    KALDI_ERR << "PCMData: empty file (no data)";
+    KADLI_WARN << "PCMData: empty file (no data)";
   
   uint32 num_samp = num_bytes_read / block_align;
   KALDI_LOG << "PCMData: there are " << num_samp << " samples";
@@ -182,7 +182,7 @@ void PCMData::Read(std::istream &is, long fileLen) {
             break;
           }
         default:
-          KALDI_ERR << "bits per sample is " << bits_per_sample;  // already checked this.
+          KADLI_WARN << "bits per sample is " << bits_per_sample;  // already checked this.
       }
     }
   }
@@ -199,7 +199,7 @@ void PCMData::Read(std::istream &is, long fileLen) {
 void PCMData::Write(std::ostream &os) const {
   os << "RIFF";
   if (data_.NumRows() == 0)
-    KALDI_ERR << "Error: attempting to write empty WAVE file";
+    KADLI_WARN << "Error: attempting to write empty WAVE file";
 
   int32 num_chan = data_.NumRows(),
       num_samp = data_.NumCols(),
@@ -229,7 +229,7 @@ void PCMData::Write(std::ostream &os) const {
       int32 elem = static_cast<int32>(data_ptr[j*stride + i]);
       int16 elem_16(elem);
       if (static_cast<int32>(elem_16) != elem)
-        KALDI_ERR << "Wave file is out of range for 16-bit.";
+        KADLI_WARN << "Wave file is out of range for 16-bit.";
 #ifdef __BIG_ENDIAN__
       KALDI_SWAP2(elem_16);
 #endif
@@ -237,7 +237,7 @@ void PCMData::Write(std::ostream &os) const {
     }
   }
   if (os.fail())
-    KALDI_ERR << "Error writing wave data to stream.";
+    KADLI_WARN << "Error writing wave data to stream.";
 }
 
 

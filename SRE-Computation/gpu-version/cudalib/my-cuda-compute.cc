@@ -6,7 +6,7 @@ bool SRECompute::cuda_sre_compute(CudaInitUBM *ubm, std::string voice_file, std:
 	t.start();
 	if (ubm->gpuid_ < 0)
 	{
-		KALDI_ERR << "wrong gpuid";
+		KADLI_WARN << "wrong gpuid";
 		return false;
 	}
 	CuDevice::Instantiate().SelectGpuIdManual(ubm->gpuid_);

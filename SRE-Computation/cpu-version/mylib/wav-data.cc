@@ -9,7 +9,7 @@ bool WAVGetData::Read(std::string filename, int32 channel, BaseFloat samp_freq)
 	Input wav_input_;
 	if (!wav_input_.Open(filename, NULL))
 	{
-		KALDI_ERR << "TableReader: failed to open wav file" << std::endl;
+		KADLI_WARN << "TableReader: failed to open wav file" << std::endl;
 		return false;
 	}
 	else
@@ -20,7 +20,7 @@ bool WAVGetData::Read(std::string filename, int32 channel, BaseFloat samp_freq)
 		}
 		else
 		{
-			KALDI_ERR << "TableReader: failed to open wav file";
+			KADLI_WARN << "TableReader: failed to open wav file";
 			return false;
 		}
 	}
@@ -34,10 +34,10 @@ bool WAVGetData::Read(std::string filename, int32 channel, BaseFloat samp_freq)
 			return false;
 	if (samp_freq != data.SampFreq())
 	{
-		KALDI_ERR << "Sample frequency mismatch: you specified "
+		KADLI_WARN << "Sample frequency mismatch: you specified "
 				  << samp_freq << " but data has "
 				  << data.SampFreq();
-		KALDI_ERR << "Frequency mismatch";
+		KADLI_WARN << "Frequency mismatch";
 		return false;
 	}
 	SubVector<BaseFloat> waveform(data.Data(), this_chan);

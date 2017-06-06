@@ -9,19 +9,19 @@ bool PCMGetData::Read(std::string filename, int32 channel, BaseFloat samp_freq)
 	int fd = open(filename.c_str(), O_RDONLY);
 	if (fd < 0)
 	{
-		KALDI_ERR << "failed to open pcm file";
+		KADLI_WARN << "failed to open pcm file";
 		return false;
 	}
 	long fileLen = lseek(fd, 0L, SEEK_END);
 	if (!(fileLen > 0))
 	{
-		KALDI_ERR << "pcm file is empty";
+		KADLI_WARN << "pcm file is empty";
 		return false;
 	}
 	close(fd);
 	if (!pcm_input_.Open(filename, NULL))
 	{
-		KALDI_ERR << "TableReader: failed to open pcm file" << std::endl;
+		KADLI_WARN << "TableReader: failed to open pcm file" << std::endl;
 		return false;
 	}
 	else
@@ -32,7 +32,7 @@ bool PCMGetData::Read(std::string filename, int32 channel, BaseFloat samp_freq)
 		}
 		else
 		{
-			KALDI_ERR << "TableReader: failed to open pcm file";
+			KADLI_WARN << "TableReader: failed to open pcm file";
 			return false;
 		}
 	}
@@ -46,10 +46,10 @@ bool PCMGetData::Read(std::string filename, int32 channel, BaseFloat samp_freq)
 			return false;
 	if (samp_freq != data.SampFreq())
 	{
-		KALDI_ERR << "Sample frequency mismatch: you specified "
+		KADLI_WARN << "Sample frequency mismatch: you specified "
 				  << samp_freq << " but data has "
 				  << data.SampFreq();
-		KALDI_ERR << "Frequency mismatch";
+		KADLI_WARN << "Frequency mismatch";
 		return false;
 	}
 	SubVector<BaseFloat> pcmform(data.Data(), this_chan);

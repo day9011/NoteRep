@@ -28,7 +28,7 @@ void CudaFGMM::Read(std::istream &is, bool binary)
 	ReadToken(is, binary, &token);
 	if (token != "<FullGMMBegin>" && token != "<FullGMM>")
 	{
-		KALDI_ERR << "Expected <FullGMM>, got" << token;
+		KADLI_WARN << "Expected <FullGMM>, got" << token;
 		exit(-1);
 	}
 	ReadToken(is, binary, &token);
@@ -40,7 +40,7 @@ void CudaFGMM::Read(std::istream &is, bool binary)
 	else
 		if (token != "<WEIGHTS>")
 		{
-			KALDI_ERR << "FullGMM::Read, expected <WEIGHTS> or <GCONSTS>, got"
+			KADLI_WARN << "FullGMM::Read, expected <WEIGHTS> or <GCONSTS>, got"
 					  << token;
 			exit(-1);
 		}
@@ -55,13 +55,13 @@ void CudaFGMM::Read(std::istream &is, bool binary)
 	ReadToken(is, binary, &token);
 	if (token != "<FullGMMEnd>" && token != "</FullGMM>")
 	{
-		KALDI_ERR << "Expected </FullGMM>, got" << token;
+		KADLI_WARN << "Expected </FullGMM>, got" << token;
 		exit(-1);
 	}
 	cu_inv_covars_.Resize(ncomp, dim);
 	cu_inv_covars_.CopyFromMats(inv_covars_);
 #else
-	KALDI_ERR << "No Cuda";
+	KADLI_WARN << "No Cuda";
 	exit(-1);
 #endif
 }

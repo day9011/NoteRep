@@ -7,7 +7,7 @@ void CudaGMM::Read(std::istream &is, bool binary)
 	ReadToken(is, binary, &token);
 	if (token != "<DiagGMMBegin>" && token != "<DiagGMM>")
 	{
-		KALDI_ERR << "Expected <DiagGMM>, got" << token;
+		KADLI_WARN << "Expected <DiagGMM>, got" << token;
 		exit(-1);
 	}
 	ReadToken(is, binary, &token);
@@ -19,7 +19,7 @@ void CudaGMM::Read(std::istream &is, bool binary)
 	else
 		if (token != "<WEIGHTS>")
 		{
-			KALDI_ERR << "DiagGMM::Read, expected <WEIGHTS> or <GCONSTS>, got"
+			KADLI_WARN << "DiagGMM::Read, expected <WEIGHTS> or <GCONSTS>, got"
 					  << token;
 			exit(-1);
 		}
@@ -31,11 +31,11 @@ void CudaGMM::Read(std::istream &is, bool binary)
 	ReadToken(is, binary, &token);
 	if (token != "<DiagGMMEnd>" && token != "</DiagGMM>")
 	{
-		KALDI_ERR << "Expected </DiagGMM>, got" << token;
+		KADLI_WARN << "Expected </DiagGMM>, got" << token;
 		exit(-1);
 	}
 #else
-	KALDI_ERR << "No Cuda";
+	KADLI_WARN << "No Cuda";
 	exit(-1);
 #endif
 }
@@ -48,7 +48,7 @@ void CudaGMM::LoglikeLihoods(const CuMatrixBase<BaseFloat> &data,
 	loglikes->CopyRowsFromVec(gconsts_);
 	if (data.NumCols() != Dim())
 	{
-		KALDI_ERR << "dim is not match";
+		KADLI_WARN << "dim is not match";
 		exit(-1);
 	}
 	CuMatrix<BaseFloat> data_sq(data);

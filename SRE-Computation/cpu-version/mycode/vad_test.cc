@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 	std::fstream _file;
 	_file.open(filename.c_str(), std::ios::in);
 	if(!_file) {
-		KALDI_ERR << "\ncan't find pcm file" << std::endl;
+		KADLI_WARN << "\ncan't find pcm file" << std::endl;
 		return -1;
 	}
 	_file.close();
