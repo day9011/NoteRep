@@ -1,7 +1,7 @@
 #ifndef SRE_H
 #define SRE_H
 
-#include "mylib/my-ivector-extractor.h"
+#include "ivector/ivector-extractor.h"
 #include "hmm/posterior.h"
 #include "gmm/full-gmm.h"
 #include "gmm/mle-full-gmm.h"
@@ -9,6 +9,7 @@
 #include "base/kaldi-common.h"
 #include "util/common-utils.h"
 #include "feat/feature-mfcc.h"
+#include "feat/feature-plp.h"
 #include "matrix/kaldi-matrix.h"
 #include "ivector/voice-activity-detection.h"
 #include "gmm/diag-gmm.h"
@@ -21,6 +22,7 @@
 #include "mylib/option.h"
 #include "mylib/ubm.h"
 #include "mylib/tool.h"
+#include "mylib/fvadfunc.h"
 
 using namespace kaldi;
 using kaldi::int32;
@@ -111,9 +113,10 @@ class SRE {
 		friend class SRE<WAVGetData>;
 		bool add_feats();
 		bool data_read();
-		//mfcc特征值计算
+		bool webrtc_vad();
 		bool compute_mfcc();
 		bool compute_vad();
+		bool compute_plp();
 		bool fgmm_to_gselect_posterior(SREUBM &ubm);
 		bool extract_ivector(SREUBM &ubm);
 		Vector<BaseFloat> get_ivector();

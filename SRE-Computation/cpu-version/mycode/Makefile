@@ -18,7 +18,7 @@ LDLIBS += -Wl,-rpath,$(AMRWBLIB) -lopencore-amrwb
 		   wav_ivector pcm_ivector product_float ie_init cuda cuda_test \
 		   my_cuda test_fft
 
-BINFILES = pcm_ivector wav_ivector vad_test ie_init score_dot_product
+BINFILES = pcm_ivector wav_ivector vad_test score_dot_product score_plda_norm
 
 OBJFILES =
 

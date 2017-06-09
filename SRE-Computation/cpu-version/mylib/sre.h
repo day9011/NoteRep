@@ -1,7 +1,7 @@
 #ifndef SRE_H
 #define SRE_H
 
-#include "mylib/my-ivector-extractor.h"
+#include "ivector/ivector-extractor.h"
 #include "hmm/posterior.h"
 #include "gmm/full-gmm.h"
 #include "gmm/mle-full-gmm.h"

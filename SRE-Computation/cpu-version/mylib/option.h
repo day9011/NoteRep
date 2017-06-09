@@ -6,7 +6,7 @@
 #include "ivector/voice-activity-detection.h"
 #include "mylib/conf.h"
 #include "mylib/my-sre-option.h"
-#include "mylib/my-ivector-extractor.h"
+#include "ivector/ivector-extractor.h"
 #include "feat/feature-plp.h"
 
 using namespace kaldi;
@@ -18,7 +18,7 @@ struct MyOption
     SlidingWindowCmnOptions slid_opts;
     DeltaFeaturesOptions delta_opts;
     SRECustomOption custom_opts;
-	MyIvectorEstimationOptions extractor_opts;
+	IvectorEstimationOptions extractor_opts;
 	PlpOptions plp_opts;
 
     MyOption(): mfcc_opts(), vad_opts(), slid_opts(), delta_opts(), custom_opts(), extractor_opts()

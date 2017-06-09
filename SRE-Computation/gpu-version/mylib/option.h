@@ -6,7 +6,8 @@
 #include "ivector/voice-activity-detection.h"
 #include "mylib/conf.h"
 #include "mylib/my-sre-option.h"
-#include "mylib/my-ivector-extractor.h"
+#include "ivector/ivector-extractor.h"
+#include "feat/feature-plp.h"
 
 using namespace kaldi;
 
@@ -17,7 +18,8 @@ struct MyOption
     SlidingWindowCmnOptions slid_opts;
     DeltaFeaturesOptions delta_opts;
     SRECustomOption custom_opts;
-	MyIvectorEstimationOptions extractor_opts;
+	IvectorEstimationOptions extractor_opts;
+	PlpOptions plp_opts;
 
     MyOption(): mfcc_opts(), vad_opts(), slid_opts(), delta_opts(), custom_opts(), extractor_opts()
     {
@@ -25,15 +27,19 @@ struct MyOption
 	        vad_opts.vad_energy_mean_scale = vadEnergyMeanScale;
 	        mfcc_opts.frame_opts.samp_freq = sampFreq;
 	        mfcc_opts.frame_opts.frame_length_ms = frameLength;
+			mfcc_opts.frame_opts.snip_edges = useEdges;
 	        mfcc_opts.mel_opts.high_freq = highFreq;
 	        mfcc_opts.mel_opts.low_freq = lowFreq;
 	        mfcc_opts.num_ceps = numCeps;
-			mfcc_opts.frame_opts.dither = 0.0;
+			mfcc_opts.frame_opts.dither = ditherVal;
 	        slid_opts.normalize_variance = normVars;
 	        slid_opts.center = cmnCenter;
 	        slid_opts.cmn_window = cmnWindow;
 	        delta_opts.order = deltaOrder;
 	        delta_opts.window = deltaWindow;
+			plp_opts.frame_opts.samp_freq = sampFreq;
+			plp_opts.frame_opts.frame_length_ms = frameLength;
+			plp_opts.frame_opts.snip_edges = useEdges;
 	        custom_opts.num_ignore_frames = numIgnoreFrames;
 			custom_opts.channel = Channel;
 			custom_opts.num_gselect = numGselect;

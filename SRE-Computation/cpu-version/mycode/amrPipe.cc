@@ -43,25 +43,25 @@ int main(int argc, char *argv[])
 	std::fstream _file;
 	_file.open(filename.c_str(), std::ios::in);
 	if(!_file) {
-		KADLI_WARN << "\ncan't find pcm file" << std::endl;
+		KALDI_WARN << "\ncan't find pcm file" << std::endl;
 		return -1;
 	}
 	_file.close();
 	_file.open(final_ubm.c_str(), std::ios::in);
 	if(!_file) {
-		KADLI_WARN << "\ncan't find final.ubm file" << std::endl;
+		KALDI_WARN << "\ncan't find final.ubm file" << std::endl;
 		return -1;
 	}
 	_file.close();
 	_file.open(final_ie.c_str(), std::ios::in);
 	if(!_file) {
-		KADLI_WARN << "\ncan't find final.ie file" << std::endl;
+		KALDI_WARN << "\ncan't find final.ie file" << std::endl;
 		return -1;
 	}
 	_file.close();
 	_file.open(gmm_ubm.c_str(), std::ios::in);
 	if(!_file) {
-		KADLI_WARN << "\ncan't find gmm.ubm file" << std::endl;
+		KALDI_WARN << "\ncan't find gmm.ubm file" << std::endl;
 		return -1;
 	}
 	_file.close();

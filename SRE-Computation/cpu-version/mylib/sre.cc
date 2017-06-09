@@ -251,7 +251,7 @@ bool SRE<DataType>::extract_ivector(SREUBM &ubm)
 	double max_count_scale = 1.0;
 	ScalePosterior(opts_.extractor_opts.acoustic_weight * max_count_scale, &post_);
 	bool need_2nd_order_stats = false;
-    MyIvectorExtractorUtteranceStats utt_stats(ubm.ie_.NumGauss(),
+    IvectorExtractorUtteranceStats utt_stats(ubm.ie_.NumGauss(),
                                              ubm.ie_.FeatDim(),
                                              need_2nd_order_stats);
 	start = getSystemTime();

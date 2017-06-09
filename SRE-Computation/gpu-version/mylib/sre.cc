@@ -17,7 +17,30 @@ bool SRE<DataType>::data_read()
 {
 	DataType data_holder_;
 	data_holder_.Read(filename_, opts_.custom_opts.channel, opts_.mfcc_opts.frame_opts.samp_freq);
-	voice_data_ = data_holder_.getData();
+	Vector<BaseFloat> tempdata(data_holder_.getData());
+	int32 num_ignore = opts_.mfcc_opts.frame_opts.WindowShift() * opts_.custom_opts.num_ignore_frames;
+	voice_data_ = tempdata.Range(num_ignore, tempdata.Dim() - num_ignore);
+	KALDI_LOG << "ignore num samples:" << num_ignore;
+	return true;
+}
+
+template<class DataType>
+bool SRE<DataType>::webrtc_vad()
+{
+	Vector<BaseFloat> tempdata(voice_data_);
+	uint8_t* in_data = reinterpret_cast<uint8_t*>(tempdata.Data());
+	std::vector<uint8_t> out_data;
+	if (!process_vad(in_data, sampFreq, 3, 30, 1, 16, tempdata.Dim(), out_data))
+	{
+		KALDI_LOG << "processing vad failed";
+		return false;
+	}
+	int32 dim = out_data.size() / 2;
+	Vector<BaseFloat> vaded_voice;
+	vaded_voice.Resize(dim);
+	vaded_voice.CopyFromPtr(reinterpret_cast<BaseFloat*>(&out_data[0]), dim);
+	voice_data_ = vaded_voice;
+	KALDI_LOG << "finish webrtc vad";
 	return true;
 }
 
@@ -28,15 +51,13 @@ bool SRE<DataType>::compute_mfcc()
 	BaseFloat vtln_warp = vtlnWarp;
 	long long int start, end;
 	start = getSystemTime();
-	int32 num_ignore = opts_.mfcc_opts.frame_opts.WindowShift() * opts_.custom_opts.num_ignore_frames;
-	KALDI_LOG << "ignore num samples:" << num_ignore;
 //	int32 num_ignore = 0;	
 	KALDI_LOG << "vtln_warp is: " << vtln_warp;
 	Mfcc mfcc(opts_.mfcc_opts);
 	BaseFloat vtln_warp_local = vtln_warp;
 	try
 	{
-	    mfcc.Compute(voice_data_.Range(num_ignore, voice_data_.Dim() - num_ignore), vtln_warp_local, &features_, NULL);	
+	    mfcc.Compute(voice_data_, vtln_warp_local, &features_, NULL);	
 
 //		CompressedMatrix compress_mat(features_);
 //		compress_mat.CopyToMat(&features_);
@@ -49,6 +70,34 @@ bool SRE<DataType>::compute_mfcc()
 	KALDI_LOG << features_.NumRows() << " frames were completely computed!";
 	end = getSystemTime();
 	KALDI_LOG << "compute mfcc time: " << end - start << "ms";
+	return true;
+}
+
+//plp feature compute
+template<class DataType>
+bool SRE<DataType>::compute_plp()
+{
+	Plp plp(opts_.plp_opts);
+	Matrix<BaseFloat> plp_feature;
+	try{
+		plp.Compute(voice_data_, vtlnWarp, &plp_feature, NULL);
+		//paste mfcc feature and plp feature
+		if (plp_feature.NumRows() != features_.NumRows())
+		{
+			KALDI_WARN << "error rows between plp feature and mfcc feature" << " plp feature rows:" << plp_feature.NumRows() << " and mfcc feature rows:" << features_.NumRows();
+			return false;
+		}
+		Matrix<BaseFloat> temp_feats(features_);
+		int32 rows = temp_feats.NumRows(),
+		  	  cols = temp_feats.NumCols() + plp_feature.NumCols();
+		features_.Resize(rows, cols);
+		features_.Range(0, rows, 0, temp_feats.NumCols()).CopyFromMat(temp_feats);
+		features_.Range(0, rows, temp_feats.NumCols(), plp_feature.NumCols()).CopyFromMat(plp_feature);
+	}
+	catch (...)
+	{
+		return false;
+	}
 	return true;
 }
 
@@ -202,7 +251,7 @@ bool SRE<DataType>::extract_ivector(SREUBM &ubm)
 	double max_count_scale = 1.0;
 	ScalePosterior(opts_.extractor_opts.acoustic_weight * max_count_scale, &post_);
 	bool need_2nd_order_stats = false;
-    MyIvectorExtractorUtteranceStats utt_stats(ubm.ie_.NumGauss(),
+    IvectorExtractorUtteranceStats utt_stats(ubm.ie_.NumGauss(),
                                              ubm.ie_.FeatDim(),
                                              need_2nd_order_stats);
 	start = getSystemTime();
