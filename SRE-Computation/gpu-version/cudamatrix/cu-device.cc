@@ -67,12 +67,12 @@ namespace kaldi {
 void CuDevice::SelectGpuId(std::string use_gpu) {
   // Possible modes
   if (use_gpu != "yes" && use_gpu != "no" && use_gpu != "optional" && use_gpu != "wait") {
-    KADLI_WARN << "Please choose : --use-gpu=yes|no|optional|wait, passed '" << use_gpu << "'";
+    KALDI_WARN << "Please choose : --use-gpu=yes|no|optional|wait, passed '" << use_gpu << "'";
   }
 
   // Make sure this function is not called twice!
   if (Enabled()) {
-    KADLI_WARN << "There is already an active GPU " << active_gpu_id_
+    KALDI_WARN << "There is already an active GPU " << active_gpu_id_
               << ", cannot change it on the fly!";
   }
   // Allow the GPU to stay disabled
@@ -162,7 +162,7 @@ void CuDevice::SelectGpuId(std::string use_gpu) {
       // Could not get GPU, after prevously having the CUDA context?
       // Strange but not impossible...
       if (use_gpu == "yes") {
-        KADLI_WARN << "Error acquiring GPU.";
+        KALDI_WARN << "Error acquiring GPU.";
       }
       if (use_gpu == "optional") {
         KALDI_WARN << "Running on CPU!!! Error acquiring GPU.";
@@ -333,7 +333,7 @@ bool CuDevice::SelectGpuIdAuto() {
   do {
     // try to select the GPU in the best to worst order
     // Note we have to check the return codes manually, as the CU_SAFE_CALL
-    // contains call to KADLI_WARN (which will cause the program to abort)
+    // contains call to KALDI_WARN (which will cause the program to abort)
 
     dev_id = free_mem_ratio[max_id].first;
     mem_ratio = free_mem_ratio[max_id].second;
@@ -517,7 +517,7 @@ void* CuDevice::MallocPitch(size_t row_bytes, size_t num_rows, size_t *pitch) {
   cudaError_t e = cudaMallocPitch(&ret_ptr, pitch, row_bytes, num_rows);
   if (e != cudaSuccess) {
     PrintMemoryUsage();
-    KADLI_WARN << "CuDevice::MallocPitch: cannot allocate the requested memory ("
+    KALDI_WARN << "CuDevice::MallocPitch: cannot allocate the requested memory ("
       << row_bytes << " x " << num_rows << " = "
       << row_bytes * num_rows << " bytes )";
   }
@@ -529,7 +529,7 @@ void* CuDevice::Malloc(size_t size) {
   cudaError_t e = cudaMalloc(&ret_ptr, size);
   if (e != cudaSuccess) {
     PrintMemoryUsage();
-    KADLI_WARN << "CuDevice::Malloc: cannot allocate the requested memory"
+    KALDI_WARN << "CuDevice::Malloc: cannot allocate the requested memory"
       << " (" << size << " bytes )";
   }
   return ret_ptr;

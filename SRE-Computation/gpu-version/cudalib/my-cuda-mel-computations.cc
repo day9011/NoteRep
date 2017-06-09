@@ -36,7 +36,7 @@ template<typename Real>
 CuMelBanks<Real>::CuMelBanks(const MelBanksOptions &opts, const FrameExtractionOptions &frame_opts, Real vtln_warp_factor): htk_mode_(opts.htk_mode) {
   num_bins = opts.num_bins;
   if (num_bins < 3) 
-  	KADLI_WARN << "Must have at least 3 mel bins";
+  	KALDI_WARN << "Must have at least 3 mel bins";
   Real sample_freq = frame_opts.samp_freq;
   int32 window_length = static_cast<int32>(frame_opts.samp_freq*0.001*frame_opts.frame_length_ms);
   int32 window_length_padded =
@@ -56,7 +56,7 @@ CuMelBanks<Real>::CuMelBanks(const MelBanksOptions &opts, const FrameExtractionO
   if (low_freq < 0.0 || low_freq >= nyquist
       || high_freq <= 0.0 || high_freq > nyquist
       || high_freq <= low_freq)
-    KADLI_WARN << "Bad values in options: low-freq " << low_freq
+    KALDI_WARN << "Bad values in options: low-freq " << low_freq
               << " and high-freq " << high_freq << " vs. nyquist "
               << nyquist;
   
@@ -81,7 +81,7 @@ CuMelBanks<Real>::CuMelBanks(const MelBanksOptions &opts, const FrameExtractionO
        || vtln_low >= high_freq
        || vtln_high <= 0.0 || vtln_high >= high_freq
        || vtln_high <= vtln_low))
-    KADLI_WARN << "Bad values in options: vtln-low " << vtln_low
+    KALDI_WARN << "Bad values in options: vtln-low " << vtln_low
               << " and vtln-high " << vtln_high << ", versus "
               << "low-freq " << low_freq << " and high-freq "
               << high_freq;

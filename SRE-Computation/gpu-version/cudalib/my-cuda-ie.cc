@@ -97,7 +97,7 @@ void CudaIE::Read(std::istream &is, bool binary)
 	ReadBasicType(is, binary, &prior_offset_);
 	ExpectToken(is, binary, "</IvectorExtractor>");
 #else
-	KADLI_WARN << "No Cuda";
+	KALDI_WARN << "No Cuda";
 	exit(-1);
 #endif
 }

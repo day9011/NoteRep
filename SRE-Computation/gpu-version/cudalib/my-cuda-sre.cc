@@ -40,7 +40,7 @@ template<class DataType>
 bool CudaSRE<DataType>::cuda_data_read(int32 channel, BaseFloat samp_freq){
 	if (!this->data_read())
 	{
-		KADLI_WARN << "read pcm file error";
+		KALDI_WARN << "read pcm file error";
 		return false;
 	}
 	int32 num_ignore = opts.mfcc_opts.frame_opts.WindowShift() * opts.custom_opts.num_ignore_frames;
@@ -114,7 +114,7 @@ bool CudaSRE<DataType>::cuda_compute_mfcc()
 	start = clock();
 	if (!this->cuda_data_read(-1, opts.mfcc_opts.frame_opts.samp_freq))
 	{
-		KADLI_WARN << "cannot read data into cuda";
+		KALDI_WARN << "cannot read data into cuda";
 		return false;
 	}
 	stop = clock();
@@ -130,7 +130,7 @@ bool CudaSRE<DataType>::cuda_compute_mfcc()
 	start = clock();	
 	if (!this->cuda_compute_vad(opts.vad_opts))
 	{
-		KADLI_WARN << "compute vad";
+		KALDI_WARN << "compute vad";
 		return false;
 	}
 	stop = clock();
@@ -139,7 +139,7 @@ bool CudaSRE<DataType>::cuda_compute_mfcc()
 	start = clock();
 	if (!this->cuda_add_feats(opts.slid_opts, opts.delta_opts))
 	{
-		KADLI_WARN << "add deltas to feature";
+		KALDI_WARN << "add deltas to feature";
 		return false;
 	}
 	stop = clock();
