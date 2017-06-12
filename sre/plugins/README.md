@@ -1,0 +1,9 @@
+Use SWIG making python Extension with C++
+================================================
+1.compile CpuCompute_wrap.cxx, generate py file<br>
+swig -python -c++ -I/home/hanyu/Documents/kaldi/src -I/home/hanyu/Documents/kaldi/tools/ATLAS/include -I/home/hanyu/Documents/kaldi/tools/openfst/include -DHAVE_CXXABI_H -DHAVE_ATLAS -DKALDI_DOUBLEPRECISION=0 -DHAVE_EXECINFO_H=1 CpuCompute.i<br>
+2.compile .o file for preparing so lib<br>
+g++ -std=c++11 -I/usr/include/python2.7 -I/home/hanyu/Documents/kaldi/src -I/home/hanyu/Documents/kaldi/tools/openfst/include  -Wall -Wno-sign-compare -Wno-unused-local-typedefs -Wno-deprecated-declarations -Winit-self -DKALDI_DOUBLEPRECISION=0 -DHAVE_EXECINFO_H=1 -DHAVE_CXXABI_H -DHAVE_ATLAS -I/home/hanyu/Documents/kaldi/tools/ATLAS/include -msse -msse2 -pthread -g  -fPIC   -c -o CpuCompute.o  CpuCompute_wrap.cxx<br>
+3.generate so file<br>
+g++ -shared CpuCompute.o -o _CpuCompute.so -Wl,--no-undefined -Wl,--as-needed  -Wl,--no-whole-archive  -Wl,-rpath=/home/hanyu/Documents/kaldi/tools/openfst/lib -rdynamic -Wl,-rpath=/home/hanyu/Documents/kaldi/src/lib  /home/hanyu/Documents/kaldi/src/mylib/libmylib.so  /home/hanyu/Documents/kaldi/src/cudamatrix/libkaldi-cudamatrix.so  /home/hanyu/Documents/kaldi/src/feat/libkaldi-feat.so  /home/hanyu/Documents/kaldi/src/ivector/libkaldi-ivector.so  /home/hanyu/Documents/kaldi/src/transform/libkaldi-transform.so  /home/hanyu/Documents/kaldi/src/hmm/libkaldi-hmm.so  /home/hanyu/Documents/kaldi/src/gmm/libkaldi-gmm.so  /home/hanyu/Documents/kaldi/src/matrix/libkaldi-matrix.so  /home/hanyu/Documents/kaldi/src/tree/libkaldi-tree.so  /home/hanyu/Documents/kaldi/src/thread/libkaldi-thread.so  /home/hanyu/Documents/kaldi/src/util/libkaldi-util.so  /home/hanyu/Documents/kaldi/src/base/libkaldi-base.so /home/hanyu/Documents/kaldi/tools/openfst/lib/libfst.so /usr/lib/libatlas.so.3 /usr/lib/libf77blas.so.3 /usr/lib/libcblas.so.3 /usr/lib/liblapack_atlas.so.3 -lm -lpthread -ldl -lpython2.7<br>
+

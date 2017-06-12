@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="{{ static_url("css/bootstrap.min.css") }}">
+    <link rel="stylesheet" href="{{ static_url("css/materialize.css") }}">
+    <link rel="stylesheet" href="{{ static_url("css/topic.css") }}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="viewport" content="width=device-width,
+                                     initial-scale=1.0,
+                                     maximum-scale=1.0,
+                                     user-scalable=no">
+</head>
+<body>
+    <header>
+        <div class="cell">
+            <h1>{{title}}<h1>
+        </div>
+    </header>
+    <div class="middle">
+        <div class="content">
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{content}}</p>
+        </div>
+        <div class="comment">
+            <div class="remark">
+                <div class="btn-line">
+                    <div class="btn-left">精彩评论</div>
+                    <div id="comment_count" class="btn-right"></div>
+                    <!--<div class="btn-right"><a href="#post-comment" class="waves-effect waves-light btn modal-trigger">发表评论</a></div>-->
+                </div>
+            </div>
+            <!--<div class="commit-list">-->
+                <!--<div id="wrapper">-->
+                    <!--<div id="scroller">-->
+                        <!--<div id="pullDown">-->
+                            <!--<span class="pullDownIcon"></span><span class="pullDownLabel"></span>-->
+                        <!--</div>-->
+                        <!--<ul id="comment"></ul>-->
+                        <!--<div id="pullUp">-->
+                            <!--<span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多评论</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="comment-list">
+                <iframe id="comment-frame" frameborder="0" name="i" src="http://121.42.145.214:8888/comment/page/{{topic_id}}" scrolling="auto"/></iframe>
+            </div>
+        </div>
+    </div>
+    <!--<div id="post-comment" class="modal post-comment" style="min-height: 70%;overflow: hidden;">-->
+        <!--<div class="modal-head btn-line" style="width:100%;height:10%;background-color:#424242;text-align: center;">-->
+            <!--<div class="btn-left"><p>发表评论</p></div>-->
+            <!--<div class="btn-right"><a class="modal-action modal-close btn-floating waves-effect waves-light grey darken-1" style="text-align:center;float:right;width:20px;height:20px;line-height:20px;margin:10px 10px;">X</a></div>-->
+        <!--</div>-->
+        <!--<div class="modal-content" style="display:block;height:80%;">-->
+            <!--<textarea id="post-content" placeholder="请输入评论内容"></textarea>-->
+        <!--</div>-->
+        <!--<div class="modal-footer" style="display:block;height:10%;">-->
+            <!--<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>-->
+            <!--<a id="post" href="javascript:void(0);" class="modal-action modal-close waves-effect waves-green btn-flat">提交</a>-->
+        <!--</div>-->
+    <!--</div>-->
+    <footer>
+        <div class="cell">Tfboys's APP!</div>
+        <input id="topic_id" type="hidden" value="{{topic_id}}" />
+    </footer>
+    <script type="text/javascript" src="{{ static_url("js/jquery-2.1.1.min.js") }}"></script>
+    <script type="text/javascript" src="{{ static_url("js/jquery-ui.min.js") }}"></script>
+    <script type="text/javascript" src="{{ static_url("js/materialize.js") }}"></script>
+    <script type="text/javascript">
+    var num = 10;
+    var cursor = 0;
+    var nums = 0;
+    var topic_id = $("#topic_id").val();
+    var url = "http://121.42.145.214:8888/comments/id/" + topic_id + "?num=" + num + "&cursor=" + cursor;
+    var pre = false;
+    $.ajax({
+        type: "HTTP",
+        method: "GET",
+        url: url,
+        datatype: "json",
+        success: function (data) {
+            var comments = JSON.parse(data);
+            if (comments["nums"]){
+                nums = comments["nums"];
+                $("#comment_count").html("评论数为" + nums);
+            }
+            else
+            {
+                $("#comment_count").html("暂时没有评论");
+                return;
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+	</script>
+</body>
+</html>
