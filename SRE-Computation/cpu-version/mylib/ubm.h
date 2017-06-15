@@ -11,6 +11,7 @@
 #include "gmm/am-diag-gmm.h"
 #include "util/kaldi-io.h"
 #include "mylib/gettime.h"
+#include "ivector/plda.h"
 
 using namespace kaldi;
 
@@ -20,11 +21,12 @@ class SREUBM
 		SREUBM() {}
 		~SREUBM() {}
 
-		bool ReadUBMFile(std::string final_ubm, std::string final_ie, std::string gmm_ubm);
+		bool ReadUBMFile(std::string final_ubm, std::string final_ie, std::string gmm_ubm, std::string plda);
 
 		DiagGmm gmm_;
 		FullGmm fgmm_;
 		IvectorExtractor ie_;
+		Plda plda_;
 
 		SREUBM& operator=(const SREUBM &) = delete;
 		SREUBM(const SREUBM&) = delete;

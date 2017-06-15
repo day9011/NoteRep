@@ -1,6 +1,9 @@
 #ifndef MY_CONF
 #define MY_CONF
 
+//wav file configure
+#define littleEndian (1==0)
+
 //modified configure
 #define sampFreq 16000 //in FrameExtractionOptions
 #define frameLength 20 //in FrameExtractionOptions
@@ -30,6 +33,10 @@
 #define numIgnoreFrames 0
 #define numGselect 20 //in gmm-select
 #define Channel -1
+
+//Plda option
+#define normalizeLength (1==1)
+#define simpleLengthNorm (1==0)
 
 //CudaFrameExtractionOptions
 

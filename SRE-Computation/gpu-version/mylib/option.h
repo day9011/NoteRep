@@ -21,7 +21,8 @@ struct MyOption
 	IvectorEstimationOptions extractor_opts;
 	PlpOptions plp_opts;
 
-    MyOption(): mfcc_opts(), vad_opts(), slid_opts(), delta_opts(), custom_opts(), extractor_opts()
+    MyOption(): mfcc_opts(), vad_opts(), slid_opts(), delta_opts(), custom_opts(), extractor_opts(), \
+				plp_opts()
     {
 	        vad_opts.vad_energy_threshold = vadEnergyThreshold;
 	        vad_opts.vad_energy_mean_scale = vadEnergyMeanScale;

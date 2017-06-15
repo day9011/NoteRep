@@ -19,7 +19,7 @@ TESTFILES =
 
 #OBJFILES = sre.o
 OBJFILES = fvadfunc.o cpu-init.o ubm.o my-init-extractor.o pcm-reader.o my-ivector-extractor.o \
-		   pcm-data.o wav-data.o score.o sre.o cpu-compute.o
+		   pcm-data.o wav-data.o score.o sre.o cpu-compute.o plda-norm.o
 #OBJFILES = my-init-extractor.o pcm-reader.o
 
 #fvadfunc.o: %.o: %.cc

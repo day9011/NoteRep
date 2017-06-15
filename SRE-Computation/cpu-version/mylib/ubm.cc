@@ -1,6 +1,6 @@
 #include "ubm.h"
 
-bool SREUBM::ReadUBMFile(std::string final_ubm, std::string final_ie, std::string gmm_ubm)
+bool SREUBM::ReadUBMFile(std::string final_ubm, std::string final_ie, std::string gmm_ubm, std::string plda)
 {
 	long long start, end;
 	start = getSystemTime();
@@ -15,5 +15,9 @@ bool SREUBM::ReadUBMFile(std::string final_ubm, std::string final_ie, std::strin
 	ReadKaldiObject(gmm_ubm, &gmm_);
 	end = getSystemTime();
 	KALDI_LOG << "Read gmm.ubm file time: " << end - start << "ms";
+	start = getSystemTime();
+	ReadKaldiObject(plda, &plda_);
+	end = getSystemTime();
+	KALDI_LOG << "Read plda file time: " << end - start << "ms";
 	return true;
 }

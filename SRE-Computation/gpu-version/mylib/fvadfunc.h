@@ -16,7 +16,9 @@ extern "C"
 }
 
 //Just apply to handle 16 bits_per_sample
-bool process_vad(uint8_t* data, int sample_rate, int vad_mode, int frame_ms, int channels, int bits_per_sample, int data_length, std::vector<uint8_t> &out_data);
+bool process_vad(uint8_t* indata, int sample_rate, int vad_mode, int frame_ms, int channels, int bits_per_sample, int data_length, std::vector<uint8_t> &out_data);
 
+bool process_vad(float* indata, int sample_rate, int vad_mode, int frame_ms, int channels, int bits_per_sample, int data_length, std::vector<float> &out_data);
+bool process_vad(double* indata, int sample_rate, int vad_mode, int frame_ms, int channels, int bits_per_sample, int data_length, std::vector<double> &out_data);
 
 #endif

@@ -9,7 +9,7 @@ class InitSRE
 {
 	public:
 		InitSRE() {}
-		bool ReadUBMFile(std::string final_ubm, std::string final_ie, std::string gmm_ubm);
+		bool ReadUBMFile(std::string final_ubm, std::string final_ie, std::string gmm_ubm, std::string plda);
 		
 		~InitSRE() {}
 		SREUBM *ubm;

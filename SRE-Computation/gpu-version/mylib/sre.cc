@@ -20,6 +20,7 @@ bool SRE<DataType>::data_read()
 	Vector<BaseFloat> tempdata(data_holder_.getData());
 	int32 num_ignore = opts_.mfcc_opts.frame_opts.WindowShift() * opts_.custom_opts.num_ignore_frames;
 	voice_data_ = tempdata.Range(num_ignore, tempdata.Dim() - num_ignore);
+	out_vec_to_file(voice_data_, "./voice.txt");
 	KALDI_LOG << "ignore num samples:" << num_ignore;
 	return true;
 }
@@ -28,17 +29,21 @@ template<class DataType>
 bool SRE<DataType>::webrtc_vad()
 {
 	Vector<BaseFloat> tempdata(voice_data_);
-	uint8_t* in_data = reinterpret_cast<uint8_t*>(tempdata.Data());
-	std::vector<uint8_t> out_data;
+	out_vec_to_file(voice_data_, "./temp_voice.txt");
+//	uint8_t* in_data = reinterpret_cast<uint8_t*>(tempdata.Data());
+	BaseFloat* in_data = tempdata.Data();
+	std::vector<BaseFloat> out_data;
 	if (!process_vad(in_data, sampFreq, 3, 30, 1, 16, tempdata.Dim(), out_data))
 	{
 		KALDI_LOG << "processing vad failed";
 		return false;
 	}
-	int32 dim = out_data.size() / 2;
+	KALDI_LOG << "size of Basefloat:" << sizeof(BaseFloat);
+	int32 dim = out_data.size();
 	Vector<BaseFloat> vaded_voice;
 	vaded_voice.Resize(dim);
-	vaded_voice.CopyFromPtr(reinterpret_cast<BaseFloat*>(&out_data[0]), dim);
+	vaded_voice.CopyFromPtr(&(out_data[0]), dim);
+	out_vec_to_file(vaded_voice, "./vaded_voice.txt");
 	voice_data_ = vaded_voice;
 	KALDI_LOG << "finish webrtc vad";
 	return true;
@@ -268,9 +273,6 @@ bool SRE<DataType>::extract_ivector(SREUBM &ubm)
 	KALDI_LOG << "extract ivector get distribution time:" << end - start << " ms" << std::endl;
 	e_ivector(0) -= ubm.ie_.PriorOffset();
 	ivector_result_ = Vector<BaseFloat>(e_ivector);
-	my_ivector_normalize_length(ivector_result_);
-	my_ivector_mean(ivector_result_);
-	my_ivector_normalize_length(ivector_result_);
 	return true;
 }
 

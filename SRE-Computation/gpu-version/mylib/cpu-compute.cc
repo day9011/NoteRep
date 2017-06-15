@@ -21,7 +21,10 @@ bool CpuCompute::Compute(InitSRE *ubm, std::string filename,  std::string ivecto
 		if(!sre.add_feats())
 			return false;
 		if(static_cast<int>(sre.get_feature().NumRows()) < valid_frames)
+		{
+			KALDI_LOG << "lack of valid frames, valid frames:" << sre.get_feature().NumRows();
 			return false;
+		}
 		KALDI_LOG << "valid frames:" << sre.get_feature().NumRows();
 		// out_mat_to_file(sre.get_feature(), "cpu-feature.txt");
 		if(!sre.fgmm_to_gselect_posterior(*(ubm->ubm)))

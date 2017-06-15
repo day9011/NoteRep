@@ -79,18 +79,28 @@ bool my_ivector_normalize_length(Vector<T> &ivector)
 }
 
 template <typename T>
-bool my_ivector_mean(Vector<T> &ivector)
+bool my_ivector_mean(std::vector<Vector<T> > &ivectors, Vector<T> &ivector_mean)
 {
 	long long start, end;
 	start = getSystemTime();
-	if (ivector.Dim() < 1)
+	Vector<T> spk_mean(ivectors[0].Dim());
+	spk_mean.SetZero();
+	for (auto iter = ivectors.begin(); iter != ivectors.end(); ++iter)
 	{
-		std::cout << "empty ivector" << std::endl;
-		return false;
+		if ((*iter).Dim() < 1)
+		{
+			KALDI_WARN << "empty ivector";
+			return false;
+		}
+		if (iter->Dim() != spk_mean.Dim())
+		{
+			KALDI_WARN << "error dim in ivector mean computing";	
+			return false;
+		}
+		spk_mean.AddVec(1.0, (*iter));
 	}
-	Vector<BaseFloat> spk_mean = ivector;
-	spk_mean.Scale(1.0 / 1);
-	ivector = spk_mean;
+	spk_mean.Scale(1.0 / static_cast<T>(ivectors.size()));
+	ivector_mean = spk_mean;
 	end = getSystemTime();
 	KALDI_LOG << "ivector mean time: " << end - start << "ms";
 	return true;
