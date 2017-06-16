@@ -15,20 +15,20 @@ if version_info >= (2,6,0):
         import imp
         fp = None
         try:
-            fp, pathname, description = imp.find_module('_CpuCompute', [dirname(__file__)])
+            fp, pathname, description = imp.find_module('_CpuScorePlda', [dirname(__file__)])
         except ImportError:
-            import _CpuCompute
-            return _CpuCompute
+            import _CpuScorePlda
+            return _CpuScorePlda
         if fp is not None:
             try:
-                _mod = imp.load_module('_CpuCompute', fp, pathname, description)
+                _mod = imp.load_module('_CpuScorePlda', fp, pathname, description)
             finally:
                 fp.close()
             return _mod
-    _CpuCompute = swig_import_helper()
+    _CpuScorePlda = swig_import_helper()
     del swig_import_helper
 else:
-    import _CpuCompute
+    import _CpuScorePlda
 del version_info
 try:
     _swig_property = property
@@ -69,21 +69,21 @@ except AttributeError:
     _newclass = 0
 
 
-class CpuCompute(_object):
+class ScorePLDA(_object):
     __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, CpuCompute, name, value)
+    __setattr__ = lambda self, name, value: _swig_setattr(self, ScorePLDA, name, value)
     __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, CpuCompute, name)
+    __getattr__ = lambda self, name: _swig_getattr(self, ScorePLDA, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        this = _CpuCompute.new_CpuCompute()
+        this = _CpuScorePlda.new_ScorePLDA()
         try: self.this.append(this)
         except: self.this = this
-    __swig_destroy__ = _CpuCompute.delete_CpuCompute
+    __swig_destroy__ = _CpuScorePlda.delete_ScorePLDA
     __del__ = lambda self : None;
-    def Compute(self, *args): return _CpuCompute.CpuCompute_Compute(self, *args)
-CpuCompute_swigregister = _CpuCompute.CpuCompute_swigregister
-CpuCompute_swigregister(CpuCompute)
+    def score_plda(self, *args): return _CpuScorePlda.ScorePLDA_score_plda(self, *args)
+ScorePLDA_swigregister = _CpuScorePlda.ScorePLDA_swigregister
+ScorePLDA_swigregister(ScorePLDA)
 
 # This file is compatible with both classic and new-style classes.
 

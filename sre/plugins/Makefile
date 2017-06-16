@@ -1,7 +1,7 @@
 CXX=g++
 SWIG=swig
-KALDIROOT= /home/hanyu/Documents/kaldi
-LIBVADROOT= /home/hanyu/Documents/vad
+KALDIROOT= /home/gzdinghanyu/kaldi
+LIBVADROOT= /home/gzdinghanyu/vad
 INCLUDE= . $(KALDIROOT)/src $(KALDIROOT)/tools/ATLAS/include $(KALDIROOT)/tools/openfst/include /usr/include/python2.7 $(LIBVADROOT)/include
 INCLUDEFLAGS= $(addprefix -I,$(INCLUDE))
 SWIGFLAGS= -python -c++
@@ -16,7 +16,7 @@ LDLIB= mylib kaldi-feat kaldi-ivector kaldi-transform kaldi-hmm kaldi-gmm kaldi-
 LDLIBFLAGS= $(addprefix -l,$(LDLIB))
 STATICLIBS= /usr/lib/libatlas.so.3 /usr/lib/libf77blas.so.3 /usr/lib/libcblas.so.3 /usr/lib/liblapack_atlas.so.3
 
-PYINTFILE= CpuCompute.so CpuInit.so
+PYINTFILE= CpuCompute.so CpuInit.so CpuScorePlda.so
 
 all: build
 

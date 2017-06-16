@@ -10,4 +10,5 @@ from api import *
 
 url = [
     (r"/register", register.SreRegister),
+    (r"/valid", valid.SreValid),
 ]

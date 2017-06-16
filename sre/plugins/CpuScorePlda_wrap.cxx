@@ -2934,9 +2934,9 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_CpuCompute swig_types[0]
-#define SWIGTYPE_p_InitSRE swig_types[1]
-#define SWIGTYPE_p_char swig_types[2]
+#define SWIGTYPE_p_SREUBM swig_types[0]
+#define SWIGTYPE_p_char swig_types[1]
+#define SWIGTYPE_p_kaldi__ScorePLDA swig_types[2]
 static swig_type_info *swig_types[4];
 static swig_module_info swig_module = {swig_types, 3, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
@@ -2951,16 +2951,16 @@ static swig_module_info swig_module = {swig_types, 3, 0, 0, 0, 0};
 #endif
 
 /*-----------------------------------------------
-              @(target):= _CpuCompute.so
+              @(target):= _CpuScorePlda.so
   ------------------------------------------------*/
 #if PY_VERSION_HEX >= 0x03000000
-#  define SWIG_init    PyInit__CpuCompute
+#  define SWIG_init    PyInit__CpuScorePlda
 
 #else
-#  define SWIG_init    init_CpuCompute
+#  define SWIG_init    init_CpuScorePlda
 
 #endif
-#define SWIG_name    "_CpuCompute"
+#define SWIG_name    "_CpuScorePlda"
 
 #define SWIGVERSION 0x020012 
 #define SWIG_VERSION SWIGVERSION
@@ -3038,7 +3038,7 @@ namespace swig {
 #include <string>
 
 
-#include "mylib/cpu-compute.h"
+#include "mylib/score-plda.h"
 
 
 SWIGINTERN swig_type_info*
@@ -3161,186 +3161,44 @@ SWIG_AsPtr_std_string (PyObject * obj, std::string **val)
 }
 
 
-#include <limits.h>
-#if !defined(SWIG_NO_LLONG_MAX)
-# if !defined(LLONG_MAX) && defined(__GNUC__) && defined (__LONG_LONG_MAX__)
-#   define LLONG_MAX __LONG_LONG_MAX__
-#   define LLONG_MIN (-LLONG_MAX - 1LL)
-#   define ULLONG_MAX (LLONG_MAX * 2ULL + 1ULL)
-# endif
-#endif
+  #define SWIG_From_double   PyFloat_FromDouble 
 
 
-SWIGINTERN int
-SWIG_AsVal_double (PyObject *obj, double *val)
-{
-  int res = SWIG_TypeError;
-  if (PyFloat_Check(obj)) {
-    if (val) *val = PyFloat_AsDouble(obj);
-    return SWIG_OK;
-  } else if (PyInt_Check(obj)) {
-    if (val) *val = PyInt_AsLong(obj);
-    return SWIG_OK;
-  } else if (PyLong_Check(obj)) {
-    double v = PyLong_AsDouble(obj);
-    if (!PyErr_Occurred()) {
-      if (val) *val = v;
-      return SWIG_OK;
-    } else {
-      PyErr_Clear();
-    }
-  }
-#ifdef SWIG_PYTHON_CAST_MODE
-  {
-    int dispatch = 0;
-    double d = PyFloat_AsDouble(obj);
-    if (!PyErr_Occurred()) {
-      if (val) *val = d;
-      return SWIG_AddCast(SWIG_OK);
-    } else {
-      PyErr_Clear();
-    }
-    if (!dispatch) {
-      long v = PyLong_AsLong(obj);
-      if (!PyErr_Occurred()) {
-	if (val) *val = v;
-	return SWIG_AddCast(SWIG_AddCast(SWIG_OK));
-      } else {
-	PyErr_Clear();
-      }
-    }
-  }
-#endif
-  return res;
-}
-
-
-#include <float.h>
-
-
-#include <math.h>
-
-
-SWIGINTERNINLINE int
-SWIG_CanCastAsInteger(double *d, double min, double max) {
-  double x = *d;
-  if ((min <= x && x <= max)) {
-   double fx = floor(x);
-   double cx = ceil(x);
-   double rd =  ((x - fx) < 0.5) ? fx : cx; /* simple rint */
-   if ((errno == EDOM) || (errno == ERANGE)) {
-     errno = 0;
-   } else {
-     double summ, reps, diff;
-     if (rd < x) {
-       diff = x - rd;
-     } else if (rd > x) {
-       diff = rd - x;
-     } else {
-       return 1;
-     }
-     summ = rd + x;
-     reps = diff/summ;
-     if (reps < 8*DBL_EPSILON) {
-       *d = rd;
-       return 1;
-     }
-   }
-  }
-  return 0;
-}
-
-
-SWIGINTERN int
-SWIG_AsVal_long (PyObject *obj, long* val)
-{
-  if (PyInt_Check(obj)) {
-    if (val) *val = PyInt_AsLong(obj);
-    return SWIG_OK;
-  } else if (PyLong_Check(obj)) {
-    long v = PyLong_AsLong(obj);
-    if (!PyErr_Occurred()) {
-      if (val) *val = v;
-      return SWIG_OK;
-    } else {
-      PyErr_Clear();
-    }
-  }
-#ifdef SWIG_PYTHON_CAST_MODE
-  {
-    int dispatch = 0;
-    long v = PyInt_AsLong(obj);
-    if (!PyErr_Occurred()) {
-      if (val) *val = v;
-      return SWIG_AddCast(SWIG_OK);
-    } else {
-      PyErr_Clear();
-    }
-    if (!dispatch) {
-      double d;
-      int res = SWIG_AddCast(SWIG_AsVal_double (obj,&d));
-      if (SWIG_IsOK(res) && SWIG_CanCastAsInteger(&d, LONG_MIN, LONG_MAX)) {
-	if (val) *val = (long)(d);
-	return res;
-      }
-    }
-  }
-#endif
-  return SWIG_TypeError;
-}
-
-
-SWIGINTERN int
-SWIG_AsVal_int (PyObject * obj, int *val)
-{
-  long v;
-  int res = SWIG_AsVal_long (obj, &v);
-  if (SWIG_IsOK(res)) {
-    if ((v < INT_MIN || v > INT_MAX)) {
-      return SWIG_OverflowError;
-    } else {
-      if (val) *val = static_cast< int >(v);
-    }
-  }  
-  return res;
-}
-
-
-SWIGINTERNINLINE PyObject*
-  SWIG_From_bool  (bool value)
-{
-  return PyBool_FromLong(value ? 1 : 0);
+SWIGINTERNINLINE PyObject *
+SWIG_From_float  (float value)
+{    
+  return SWIG_From_double  (value);
 }
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGINTERN PyObject *_wrap_new_CpuCompute(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_new_ScorePLDA(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  CpuCompute *result = 0 ;
+  kaldi::ScorePLDA *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)":new_CpuCompute")) SWIG_fail;
-  result = (CpuCompute *)new CpuCompute();
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_CpuCompute, SWIG_POINTER_NEW |  0 );
+  if (!PyArg_ParseTuple(args,(char *)":new_ScorePLDA")) SWIG_fail;
+  result = (kaldi::ScorePLDA *)new kaldi::ScorePLDA();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_kaldi__ScorePLDA, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_delete_CpuCompute(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_delete_ScorePLDA(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  CpuCompute *arg1 = (CpuCompute *) 0 ;
+  kaldi::ScorePLDA *arg1 = (kaldi::ScorePLDA *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:delete_CpuCompute",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CpuCompute, SWIG_POINTER_DISOWN |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_ScorePLDA",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_kaldi__ScorePLDA, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CpuCompute" "', argument " "1"" of type '" "CpuCompute *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ScorePLDA" "', argument " "1"" of type '" "kaldi::ScorePLDA *""'"); 
   }
-  arg1 = reinterpret_cast< CpuCompute * >(argp1);
+  arg1 = reinterpret_cast< kaldi::ScorePLDA * >(argp1);
   delete arg1;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -3349,42 +3207,40 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_CpuCompute_Compute(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_ScorePLDA_score_plda(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  CpuCompute *arg1 = (CpuCompute *) 0 ;
-  InitSRE *arg2 = (InitSRE *) 0 ;
+  kaldi::ScorePLDA *arg1 = (kaldi::ScorePLDA *) 0 ;
+  SREUBM *arg2 = (SREUBM *) 0 ;
   std::string arg3 ;
   std::string arg4 ;
-  int arg5 ;
+  std::string arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  int val5 ;
-  int ecode5 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   PyObject * obj3 = 0 ;
   PyObject * obj4 = 0 ;
-  bool result;
+  float result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOOO:CpuCompute_Compute",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CpuCompute, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:ScorePLDA_score_plda",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_kaldi__ScorePLDA, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CpuCompute_Compute" "', argument " "1"" of type '" "CpuCompute *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScorePLDA_score_plda" "', argument " "1"" of type '" "kaldi::ScorePLDA *""'"); 
   }
-  arg1 = reinterpret_cast< CpuCompute * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_InitSRE, 0 |  0 );
+  arg1 = reinterpret_cast< kaldi::ScorePLDA * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_SREUBM, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CpuCompute_Compute" "', argument " "2"" of type '" "InitSRE *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ScorePLDA_score_plda" "', argument " "2"" of type '" "SREUBM *""'"); 
   }
-  arg2 = reinterpret_cast< InitSRE * >(argp2);
+  arg2 = reinterpret_cast< SREUBM * >(argp2);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(obj2, &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "CpuCompute_Compute" "', argument " "3"" of type '" "std::string""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScorePLDA_score_plda" "', argument " "3"" of type '" "std::string""'"); 
     }
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -3393,61 +3249,65 @@ SWIGINTERN PyObject *_wrap_CpuCompute_Compute(PyObject *SWIGUNUSEDPARM(self), Py
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(obj3, &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "CpuCompute_Compute" "', argument " "4"" of type '" "std::string""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScorePLDA_score_plda" "', argument " "4"" of type '" "std::string""'"); 
     }
     arg4 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  ecode5 = SWIG_AsVal_int(obj4, &val5);
-  if (!SWIG_IsOK(ecode5)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "CpuCompute_Compute" "', argument " "5"" of type '" "int""'");
-  } 
-  arg5 = static_cast< int >(val5);
-  result = (bool)(arg1)->Compute(arg2,arg3,arg4,arg5);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj4, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScorePLDA_score_plda" "', argument " "5"" of type '" "std::string""'"); 
+    }
+    arg5 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (float)(arg1)->score_plda(arg2,arg3,arg4,arg5);
+  resultobj = SWIG_From_float(static_cast< float >(result));
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *CpuCompute_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *ScorePLDA_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_CpuCompute, SWIG_NewClientData(obj));
+  SWIG_TypeNewClientData(SWIGTYPE_p_kaldi__ScorePLDA, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
 static PyMethodDef SwigMethods[] = {
 	 { (char *)"SWIG_PyInstanceMethod_New", (PyCFunction)SWIG_PyInstanceMethod_New, METH_O, NULL},
-	 { (char *)"new_CpuCompute", _wrap_new_CpuCompute, METH_VARARGS, NULL},
-	 { (char *)"delete_CpuCompute", _wrap_delete_CpuCompute, METH_VARARGS, NULL},
-	 { (char *)"CpuCompute_Compute", _wrap_CpuCompute_Compute, METH_VARARGS, NULL},
-	 { (char *)"CpuCompute_swigregister", CpuCompute_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_ScorePLDA", _wrap_new_ScorePLDA, METH_VARARGS, NULL},
+	 { (char *)"delete_ScorePLDA", _wrap_delete_ScorePLDA, METH_VARARGS, NULL},
+	 { (char *)"ScorePLDA_score_plda", _wrap_ScorePLDA_score_plda, METH_VARARGS, NULL},
+	 { (char *)"ScorePLDA_swigregister", ScorePLDA_swigregister, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
-static swig_type_info _swigt__p_CpuCompute = {"_p_CpuCompute", "CpuCompute *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_InitSRE = {"_p_InitSRE", "InitSRE *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_SREUBM = {"_p_SREUBM", "SREUBM *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_kaldi__ScorePLDA = {"_p_kaldi__ScorePLDA", "kaldi::ScorePLDA *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
-  &_swigt__p_CpuCompute,
-  &_swigt__p_InitSRE,
+  &_swigt__p_SREUBM,
   &_swigt__p_char,
+  &_swigt__p_kaldi__ScorePLDA,
 };
 
-static swig_cast_info _swigc__p_CpuCompute[] = {  {&_swigt__p_CpuCompute, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_InitSRE[] = {  {&_swigt__p_InitSRE, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_SREUBM[] = {  {&_swigt__p_SREUBM, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_kaldi__ScorePLDA[] = {  {&_swigt__p_kaldi__ScorePLDA, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
-  _swigc__p_CpuCompute,
-  _swigc__p_InitSRE,
+  _swigc__p_SREUBM,
   _swigc__p_char,
+  _swigc__p_kaldi__ScorePLDA,
 };
 
 

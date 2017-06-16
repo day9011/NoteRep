@@ -1,0 +1,5 @@
+tornado
+mysql
+mysql-python
+libfvad
+kaldi

@@ -4,6 +4,8 @@
 import ConfigParser
 import sys
 
+all = ["init_config", "get", "set_section"]
+
 _CR_ = None
 
 class ConfigRead():

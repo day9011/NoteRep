@@ -17,6 +17,12 @@ from utils.config import *
 init_config("config/my.conf")
 set_section("sre")
 
+num_threads = int(get('numthreads'))
+
+from lib.ubm import *
+ubm_dir = get("ubmdir")
+init_ubm(ubm_dir)
+
 from url import url
 
 
@@ -45,7 +51,7 @@ if __name__ == "__main__":
     args.append('--log_file_prefix=' + get("logdir"))
     tornado.options.parse_command_line()
     server.bind(options.port)
-    server.start(0)
+    server.start(num_threads)
     tornado.ioloop.IOLoop.current().start()
     # sockets = tornado.netutil.bind_sockets(8888)
     # tornado.process.fork_processes(0)
