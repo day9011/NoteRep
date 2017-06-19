@@ -45,7 +45,12 @@ application = tornado.web.Application(
 )
 
 if __name__ == "__main__":
-    server = tornado.httpserver.HTTPServer(application)
+    sslkey = get('sslkey')
+    sslcrt = get('sslcrt')
+    server = tornado.httpserver.HTTPServer(application, ssl_options={
+            "certfile" : sslcrt,
+            "keyfile" : sslkey,
+        })
     print "Start listening port:" + str(options.port)
     args = sys.argv
     args.append('--log_file_prefix=' + get("logdir"))

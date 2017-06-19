@@ -27,6 +27,8 @@ class SreValid(RequestHandler):
         ret = {'status': 0, 'message': 'OK'}
         db = Mydb()
         try:
+            upfilepath = ''
+            ivecfile = ''
             upload_path = config_get('wavdir', 'sre')
             if not os.path.exists(upload_path):
                 os.makedirs(upload_path)
@@ -70,8 +72,6 @@ class SreValid(RequestHandler):
             wavpath = upload_path + '/' + userid
             if not os.path.exists(wavpath):
                 os.makedirs(wavpath)
-            upfilepath = ''
-            ivecfile = ''
             for meta in file_metas:
                 filename = meta['filename']
                 upfilepath = wavpath.rstrip('/') + '/' + str(wav_uuid) + '_' + filename
