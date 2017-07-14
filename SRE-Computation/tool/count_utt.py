@@ -24,12 +24,13 @@ def count_utt_score(score_file, trials_file):
     total = len(utt_dict)
     first = 0
     third = 0
+    non_third_list = []
     for (k, d) in utt_dict.items():
-        items=d.items()
-        backitems=[[v[1],v[0]] for v in items]
+        isSpk = False
+        items = d.items()
+        backitems = [[v[1],v[0]] for v in items]
         backitems.sort(reverse=True)
         judge_list = backitems[:3]
-        print judge_list
         spkid = k.strip().split('_')[0]
         if judge_list[0][1] == spkid:
             first += 1
@@ -37,8 +38,14 @@ def count_utt_score(score_file, trials_file):
         else:
             for it in judge_list:
                 if it[1] == spkid:
+                    isSpk = True
                     third += 1
                     continue
+            if not isSpk:
+                non_third_list.append(spkid + '_' + k)
+    print "non third list:"
+    for item in non_third_list:
+        print item
     print "first ratio:%.6f" % (float(first) / float(total))
     print "third ratio:%.6f" % (float(third) / float(total))
 
@@ -46,7 +53,7 @@ def count_utt_score(score_file, trials_file):
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print "Usage: " + sys.argv[0] + " score_file trials_file"
+        print "Usage: " + sys.argv[0] + " <score_file:string> <trials_file:string>"
         exit(1)
     score_file = sys.argv[1]
     trials_file = sys.argv[2]

@@ -10,10 +10,10 @@ fi
 
 amrDir=$1
 
-for x in `find ${amrDir} -type f | grep -E "*.amr$"`;
+for x in `find ${amrDir} -type f | grep -E "*.amr"`;
 do
 	filename=`basename ${x}`
 	path=`dirname ${x}`
 	name=${filename/.*}
-	$(sox ${x} -t wav ${path}/${name}.wav)
+	$(sox ${x} -t wav - | sox - -b 16 -r 8000 ${path}/${name}.wav)
 done

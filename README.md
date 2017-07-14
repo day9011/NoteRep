@@ -15,3 +15,10 @@ CUDA：
 cpp2py:
 =============================================
 此部分代码是使用swig来将C++转换为python接口
+
+sre:
+=============================================
+1.使用时需要先编译SRE-Computation<br>
+2.编译plugins<br>
+3.安装requirement中的必需库libfvad为github的开源库<br>
+4.修改config的配置文件
