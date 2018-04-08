@@ -21,7 +21,6 @@ Plugin 'honza/vim-snippets'
 Plugin 'Raimondi/delimitMate'
 Plugin 'pangloss/vim-javascript'
 Plugin 'kchmck/vim-coffee-script'
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'groenewege/vim-less'
 call vundle#end()
 filetype plugin indent on " load filetype plugins and indent settings; *Vundle required*

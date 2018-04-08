@@ -98,6 +98,4 @@ alias -s gz='tar -xzvf'
 alias -s tgz='tar -xzvf'
 alias -s bz2='tar -xjvf'
 echo "set completion-ignore-case on"
-alias createsh='/Users/dinghanyu/Documents/script/create.sh'
-alias createpy='/Users/dinghanyu/Documents/script/createpy.sh'
 set completion-ignore-case on
