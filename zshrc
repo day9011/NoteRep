@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/home/hanyu/.oh-my-zsh
+export ZSH=/home/dinghanyu/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -81,11 +81,24 @@ source $ZSH/oh-my-zsh.sh
 #
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
+alias rm=trash
+trash()
+{
+	trash_path="~/.trash"
+	deltime=`date +"%Y%m%d%H%M%S"`
+	echo ~/.trash/${deltime}
+	mkdir -p ~/.trash/${deltime}
+	for argv in "$@";do
+		if [ -e "${argv}" ];then
+			echo "Move ${argv} tp trash(~/.trash/${deltime}) ..."
+			mv ${argv} ~/.trash/${deltime}/
+		fi
+	done
+}
+
 alias cls='clear'
-alias ll='ls -l'
-alias la='ls -al'
+alias ll='ls -al'
 alias vi='vim'
-alias javac="javac -J-Dfile.encoding=utf8"
 alias grep="grep --color=auto"
 alias -s html=mate   # 在命令行直接输入后缀为 html 的文件名，会在 TextMate 中打开
 alias -s rb=mate     # 在命令行直接输入 ruby 文件，会在 TextMate 中打开
