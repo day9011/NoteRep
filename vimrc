@@ -22,6 +22,8 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'pangloss/vim-javascript'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'groenewege/vim-less'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'Shougo/neocomplete.vim'
 call vundle#end()
 filetype plugin indent on " load filetype plugins and indent settings; *Vundle required*
 set cindent shiftwidth=4
@@ -235,63 +237,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&b:NERDTreeT
 " let tagbar to be compact
 let g:tagbar_compact = 1
 
-" Python customization {
-function LoadPythonGoodies()
 
-python << EOF
-
-import os, sys, vim
-
-for p in sys.path:
-    if os.path.isdir(p):
-        vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
-
-vir_env = os.environ.get('VIRTUAL_ENV', '')
-if vir_env:
-    act_this = os.path.join(vir_env, 'bin/activate_this.py')
-    execfile(act_this, dict(__file__=act_this))
-EOF
-
-        " some nice adjustaments to show errors
-        syn match pythonError "^\s*def\s\+\w\+(.*)\s*$" display
-        syn match pythonError "^\s*class\s\+\w\+(.*)\s*$" display
-        syn match pythonError "^\s*for\s.*[^:]\s*$" display
-        syn match pythonError "^\s*except\s*$" display
-        syn match pythonError "^\s*finally\s*$" display
-        syn match pythonError "^\s*try\s*$" display
-        syn match pythonError "^\s*else\s*$" display
-        syn match pythonError "^\s*else\s*[^:].*" display
-        "syn match pythonError "^\s*if\s.*[^\:]$" display
-        syn match pythonError "^\s*except\s.*[^\:]$" display
-        syn match pythonError "[;]$" display
-        syn keyword pythonError         do
-
-        let python_highlight_builtins = 1
-        let python_highlight_exceptions = 1
-        let python_highlight_string_formatting = 1
-        let python_highlight_string_format = 1
-        let python_highlight_string_templates = 1
-        let python_highlight_indent_errors = 1
-        let python_highlight_space_errors = 1
-        let python_highlight_doctests = 1
-
-        set ai tw=0 ts=4 sts=4 sw=4 et
-
-endfunction
-
-if !exists("myautocmds")
-    let g:myautocmds=1
-
-    "all LoadPythonGoodies()
-    "autocmd Filetype python,html,xhtml call LoadPythonGoodies()
-    au BufNewFile,BufRead *.py call LoadPythonGoodies()
-    au BufRead,BufNewFile *.md set filetype=markdown
-
-    " Dissmiss PyDoc preview
-    autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-    autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-
-endif
 "--ctags setting--
 "    " 按下F5重新生成tag文件，并更新taglist
 map <F5> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>:TlistUpdate<CR>
