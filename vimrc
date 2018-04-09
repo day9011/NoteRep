@@ -227,7 +227,8 @@ autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd w
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&b:NERDTreeType == "primary") | q | endif
 
 
 " disable py_lint on every write
@@ -245,37 +246,20 @@ set tags=tags
 set tags+=./tags "add current directory's generated tags file
 set tags+=~/Documents/kaldi/src/tags "add new tags file(刚刚生成tags的路径，在ctags -R生成tags文件后，不要将tags移动到别的目录，否则ctrl+］时，会提示找不到源码文件)"
 set tags+=/usr/include/c++/tags
-"-- YouCompleteMe setting --
-" 按下F3自动补全代码，注意该映射语句后不能有其他字符，包括tab；否则按下F3会自动补全一些乱码
-set completeopt=menu,longest,preview " improve the way autocomplete works
-autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-inoremap <expr> <CR>	pumvisible() ? "\<C-y>" : "\<CR>" "Choose while entering
-" the action of down key, up key and so on
-inoremap <expr> <Down>	pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <Up>	pumvisible() ? "\<C-p>" : "\<Up>"
-inoremap <expr> <PageDown>	pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
-inoremap <expr> <PageUp>	pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
 
-" Go to the place where function define.
-nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap <F<F6>> :YcmForceCompileAndDiagnostics<CR>
-inoremap <leader><leader> <C-x><C-o>
+" OmniCppComplete
+let OmniCpp_NamespaceSearch = 1
+let OmniCpp_GlobalScopeSearch = 1
+let OmniCpp_ShowAccess = 1
+let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
+let OmniCpp_MayCompleteDot = 1 " autocomplete after .
+let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
+let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
+let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+" automatically open and close the popup menu / preview window
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+set completeopt=menuone,menu,longest,preview
 
-let g:ycm_global_ycm_extra_conf = '~/.vim/data/ycm/.ycm_extra_conf.py'
-let g:ycm_confirm_extra_conf=0
-let g:ycm_collect_identifiers_from_tags_files=1
-let g:ycm_collect_identifiers_from_comments_and_strings=0
-let g:ycm_min_num_of_chars_for_completion=2
-let g:ycm_cache_omnifunc=0
-let g:ycm_seed_identifiers_with_syntax=1
-let g:ycm_complete_in_comments=1
-let g:ycm_complete_in_strings=1
-let g:ycm_filetype_blacklist = {
-	\ 'tagbar' : 1,
-	\ 'nerdtree' : 1,
-	\}
-let g:ycm_key_list_select_completion = ['<Down>']
-let g:ycm_key_list_previous_completion = ['<Up>']
 
 "-- Taglist setting --
 let Tlist_Ctags_Cmd='ctags' "因为我们放在环境变量里，所以可以直接执行
