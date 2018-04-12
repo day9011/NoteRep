@@ -1,4 +1,4 @@
-此处为代码记录库，存放的是平时项目的代码例子：
+一些工具代码例子：
 =============================================
 JNI:
 ============================================
@@ -8,17 +8,7 @@ JNI:
 	静态库编译成动态库：gcc -shared -Wl,-sonambmylib.$(VER) -o libmylib.so $(OBJECTS)  -Wl,--whole-archive $(LIBS_TO_LINK) -Wl,--no-whole-archive  $(REGULAR_LIBS)<br>
 	一般情况下需要将静态库使用fPIC选项编译<br>
 
-CUDA：
-=============================================
-.cu文件为cuda代码
-
 cpp2py:
 =============================================
 此部分代码是使用swig来将C++转换为python接口
 
-sre:
-=============================================
-1.使用时需要先编译SRE-Computation<br>
-2.编译plugins<br>
-3.安装requirement中的必需库libfvad为github的开源库<br>
-4.修改config的配置文件
